@@ -1,21 +1,49 @@
 {
   "name": "react-electron",
   "version": "0.1.0",
+  "author" : "Brian Olsen",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.3.2",
+    "cross-env": "^7.0.3",
+    "electron-is-dev": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
+  "main": "public/main.js",
+  "homepage": "./",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start-react": "react-scripts start",
+    "build-react": "react-scripts build",
+    "test-react": "react-scripts test",
+    "eject-react": "react-scripts eject",
+    "start-electron": "electron .",
+    "start": "concurrently \"cross-env BROWSER=none npm run start-react\" \"wait-on http://127.0.0.1:3000 && npm run start-electron\"",
+    "build": "npm run build-react && electron-builder"
+  },
+  "build": {
+    "extends": null,
+    "appId": "com.example.electron-cra",
+    "productName": "React-Electron-Template",
+    "files": [
+      "public/**/*",
+      "dist/**/*",
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "public",
+      "output": "build"
+    },
+    "mac":{
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    }
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +62,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.1",
+    "wait-on": "^7.0.1",
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4"
   }
 }
